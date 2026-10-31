@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "esnext",
+    "types": ["vite/client"],
+    "allowArbitraryExtensions": true,
+    "skipLibCheck": true,
+    "strict": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Path Aliases */
+    "paths": {
+      "@plugins": ["./src/config/index.ts"],
+      "@plugins/*": ["./src/config/*"],
+      "@stores": ["./src/config/store/index.ts"],
+      "@stores/*": ["./src/config/store/*"],
+      "@router": ["./src/config/router/index.ts"],
+      "@router/*": ["./src/config/router/*"],
+      "@shared": ["./src/modules/shared/index.ts"],
+      "@shared/*": ["./src/modules/shared/*"],
+      "@polygons": ["./src/modules/polygons/index.ts"],
+      "@polygons/*": ["./src/modules/polygons/*"],
+      "@objects": ["./src/modules/objects/index.ts"],
+      "@objects/*": ["./src/modules/objects/*"],
+      "@map": ["./src/modules/map/index.ts"],
+      "@map/*": ["./src/modules/map/*"]
+    },
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}
