@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{58D880D3-EC50-4007-9D8F-71EE8AD17DBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoObjectMapper.Domain", "src\GeoObjectMapper.Domain\GeoObjectMapper.Domain.csproj", "{1221AA25-900F-4E07-B260-0819173E11C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoObjectMapper.Application", "src\GeoObjectMapper.Application\GeoObjectMapper.Application.csproj", "{C08010AA-2F3C-493B-8A01-42A4CA596F14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoObjectMapper.Infrastructure", "src\GeoObjectMapper.Infrastructure\GeoObjectMapper.Infrastructure.csproj", "{DD489743-3E8A-43DA-8633-5117AC392025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoObjectMapper.Api", "src\GeoObjectMapper.Api\GeoObjectMapper.Api.csproj", "{ADCCF60D-AE50-4EAB-9713-B28A8129F3A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{69581E41-5E8B-4343-ADEF-23319382A571}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoObjectMapper.UnitTests", "tests\GeoObjectMapper.UnitTests\GeoObjectMapper.UnitTests.csproj", "{8F31D9BA-BDF6-4A89-A333-8B2C91CFFBF1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1221AA25-900F-4E07-B260-0819173E11C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1221AA25-900F-4E07-B260-0819173E11C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1221AA25-900F-4E07-B260-0819173E11C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1221AA25-900F-4E07-B260-0819173E11C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C08010AA-2F3C-493B-8A01-42A4CA596F14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C08010AA-2F3C-493B-8A01-42A4CA596F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C08010AA-2F3C-493B-8A01-42A4CA596F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C08010AA-2F3C-493B-8A01-42A4CA596F14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD489743-3E8A-43DA-8633-5117AC392025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD489743-3E8A-43DA-8633-5117AC392025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD489743-3E8A-43DA-8633-5117AC392025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD489743-3E8A-43DA-8633-5117AC392025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADCCF60D-AE50-4EAB-9713-B28A8129F3A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADCCF60D-AE50-4EAB-9713-B28A8129F3A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADCCF60D-AE50-4EAB-9713-B28A8129F3A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADCCF60D-AE50-4EAB-9713-B28A8129F3A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F31D9BA-BDF6-4A89-A333-8B2C91CFFBF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F31D9BA-BDF6-4A89-A333-8B2C91CFFBF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F31D9BA-BDF6-4A89-A333-8B2C91CFFBF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F31D9BA-BDF6-4A89-A333-8B2C91CFFBF1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1221AA25-900F-4E07-B260-0819173E11C0} = {58D880D3-EC50-4007-9D8F-71EE8AD17DBD}
+		{C08010AA-2F3C-493B-8A01-42A4CA596F14} = {58D880D3-EC50-4007-9D8F-71EE8AD17DBD}
+		{DD489743-3E8A-43DA-8633-5117AC392025} = {58D880D3-EC50-4007-9D8F-71EE8AD17DBD}
+		{ADCCF60D-AE50-4EAB-9713-B28A8129F3A7} = {58D880D3-EC50-4007-9D8F-71EE8AD17DBD}
+		{8F31D9BA-BDF6-4A89-A333-8B2C91CFFBF1} = {69581E41-5E8B-4343-ADEF-23319382A571}
+	EndGlobalSection
+EndGlobal
