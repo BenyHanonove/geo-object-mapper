@@ -1,0 +1,35 @@
+services:
+  mongo:
+    image: mongo:7.0
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  api:
+    build: ./backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5000
+      MongoDB__ConnectionString: mongodb://mongo:27017
+    ports:
+      - "5000:5000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:5000/api
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+
+volumes:
+  mongo-data:

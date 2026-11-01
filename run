@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+# Starts the full demo stack with: run geo
+set -euo pipefail
+
+# Paths and fixed demo settings
+ROOT="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+API_DIR="$ROOT/backend/src/GeoObjectMapper.Api"
+FRONTEND_DIR="$ROOT/frontend"
+LOG_DIR="${TMPDIR:-/tmp}/geo-demo"
+MONGO_CONTAINER="geo-mongo"
+MONGO_VOLUME="geo-mongo-data"
+MONGO_IMAGE="mongo:7.0"
+MONGO_URL="mongodb://localhost:27017"
+BACKEND_READY_URL="http://localhost:5000/health/ready"
+SWAGGER_URL="http://localhost:5000/swagger"
+FRONTEND_URL="http://localhost:5173"
+BACKEND_TIMEOUT_SECONDS=120
+FRONTEND_TIMEOUT_SECONDS=60
+
+# Tracks what this run must stop
+STARTED_PIDS=()
+STARTED_MONGO=false
+
+# Small output and health helpers
+log() { echo "==> $*"; }
+
+fail() {
+  echo "ERROR: $*" >&2
+  exit 1
+}
+
+is_up() { curl -sf -o /dev/null -m 3 "$1"; }
+
+wait_until_up() {
+  local url="$1" pid="$2" name="$3" timeout="$4" log_file="$5"
+  for ((second = 0; second < timeout; second++)); do
+    is_up "$url" && return 0
+    kill -0 "$pid" 2>/dev/null || fail "$name stopped. Log: $log_file"
+    sleep 1
+  done
+  fail "$name was not ready after ${timeout}s. Log: $log_file"
+}
+
+# Stops everything this run started
+stop_all() {
+  trap - EXIT INT TERM
+  log "Stopping demo"
+  for pid in "${STARTED_PIDS[@]}"; do
+    kill -- "-$pid" 2>/dev/null || true
+  done
+  if [ "$STARTED_MONGO" = true ]; then
+    docker stop "$MONGO_CONTAINER" >/dev/null || true
+  fi
+}
+
+# Starts MongoDB with a persistent volume
+start_mongo() {
+  docker info >/dev/null 2>&1 || fail "Docker is not running. Start Docker and try again."
+
+  if docker ps --format '{{.Names}}' | grep -qx "$MONGO_CONTAINER"; then
+    log "MongoDB is already running"
+    return
+  fi
+
+  log "Starting MongoDB"
+  if docker ps -a --format '{{.Names}}' | grep -qx "$MONGO_CONTAINER"; then
+    docker start "$MONGO_CONTAINER" >/dev/null
+  else
+    docker run -d --name "$MONGO_CONTAINER" -p 27017:27017 \
+      -v "$MONGO_VOLUME:/data/db" "$MONGO_IMAGE" >/dev/null
+  fi
+  STARTED_MONGO=true
+}
+
+# Starts the API against local MongoDB
+start_backend() {
+  if is_up "$BACKEND_READY_URL"; then
+    log "Backend is already running"
+    return
+  fi
+
+  local log_file="$LOG_DIR/backend.log"
+  log "Starting backend (the first build can take a minute)"
+  (cd "$API_DIR" && MongoDB__ConnectionString="$MONGO_URL" exec setsid dotnet run) >"$log_file" 2>&1 &
+  STARTED_PIDS+=("$!")
+  wait_until_up "$BACKEND_READY_URL" "$!" "Backend" "$BACKEND_TIMEOUT_SECONDS" "$log_file"
+}
+
+# Starts Vite on the CORS-allowed port
+start_frontend() {
+  if is_up "$FRONTEND_URL"; then
+    log "Frontend is already running"
+    return
+  fi
+
+  [ -d "$FRONTEND_DIR/node_modules" ] || (cd "$FRONTEND_DIR" && npm install)
+
+  local log_file="$LOG_DIR/frontend.log"
+  log "Starting frontend"
+  (cd "$FRONTEND_DIR" && exec setsid npm run dev -- --strictPort) >"$log_file" 2>&1 &
+  STARTED_PIDS+=("$!")
+  wait_until_up "$FRONTEND_URL" "$!" "Frontend" "$FRONTEND_TIMEOUT_SECONDS" "$log_file"
+}
+
+# Runs the demo until Ctrl+C
+main() {
+  [ "${1:-}" = "geo" ] || fail "Usage: run geo"
+
+  mkdir -p "$LOG_DIR"
+  trap stop_all EXIT
+  trap 'exit 0' INT TERM
+
+  start_mongo
+  start_backend
+  start_frontend
+
+  xdg-open "$FRONTEND_URL" >/dev/null 2>&1 || true
+
+  echo
+  log "Demo is ready"
+  echo "    App:     $FRONTEND_URL"
+  echo "    Swagger: $SWAGGER_URL"
+  echo "    Logs:    $LOG_DIR"
+
+  if [ "${#STARTED_PIDS[@]}" -eq 0 ]; then
+    return
+  fi
+
+  echo "    Press Ctrl+C to stop"
+  wait -n "${STARTED_PIDS[@]}" || true
+  fail "A service stopped unexpectedly. Logs: $LOG_DIR"
+}
+
+main "$@"
