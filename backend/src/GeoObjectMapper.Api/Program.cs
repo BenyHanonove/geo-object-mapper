@@ -13,10 +13,7 @@ Env.TraversePath().NoClobber().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Add Controllers & JSON settings
 builder.Services.AddControllers();
-
-// 2. Swagger / OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -32,11 +29,9 @@ builder.Services.AddSwaggerGen(options =>
         includeControllerXmlComments: true);
 });
 
-// 3. HealthChecks
 builder.Services.AddHealthChecks()
     .AddCheck<MongoHealthCheck>("mongodb", tags: [readyTag], timeout: TimeSpan.FromSeconds(3));
 
-// 4. CORS: Allow React Vite frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -47,13 +42,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-// 5. Dependency Injection
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-// 6. Middleware Pipeline (Order matters!)
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
@@ -70,3 +63,6 @@ app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => fa
 app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = check => check.Tags.Contains(readyTag) });
 
 app.Run();
+
+/// <summary>Entry point type exposed for integration testing.</summary>
+public partial class Program;

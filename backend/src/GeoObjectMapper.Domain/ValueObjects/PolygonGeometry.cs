@@ -15,21 +15,23 @@ public sealed record class PolygonGeometry
             throw new InvalidGeometryException("Polygon coordinates cannot be null or empty.");
         }
 
-        var outerRing = coordinates[0];
-
-        if (outerRing.Count < 4)
+        for (var i = 0; i < coordinates.Count; i++)
         {
-            throw new InvalidGeometryException("Polygon outer ring must contain at least 4 coordinates.");
+            var ring = coordinates[i];
+            var ringLabel = i == 0 ? "outer ring" : $"inner ring {i}";
 
-        }
+            if (ring == null || ring.Count < 4)
+            {
+                throw new InvalidGeometryException($"Polygon {ringLabel} must contain at least 4 coordinates.");
+            }
 
-        if (outerRing[0] != outerRing[^1])
-        {
-            throw new InvalidGeometryException("Polygon outer ring must be closed (first coordinate must match last).");
+            if (ring[0] != ring[^1])
+            {
+                throw new InvalidGeometryException($"Polygon {ringLabel} must be closed (first coordinate must match last).");
+            }
         }
 
         Coordinates = coordinates;
-
     }
 
     public static PolygonGeometry FromRing(IEnumerable<Coordinate> ring)

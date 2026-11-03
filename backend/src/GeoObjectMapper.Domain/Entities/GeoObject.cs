@@ -5,7 +5,7 @@ using GeoObjectMapper.Domain.ValueObjects;
 namespace GeoObjectMapper.Domain.Entities;
 
 // Aggregate root representing a map point object.
-public sealed class GeoObject : BaseEntity, IAggregateRoot
+public sealed class GeoObject : BaseEntity
 {
     public string Name { get; private set; } = null!;
     public SymbolType SymbolType { get; private set; } = null!;
@@ -13,20 +13,25 @@ public sealed class GeoObject : BaseEntity, IAggregateRoot
 
     private GeoObject() { }
     private GeoObject(Guid id, string name, SymbolType symbolType, PointGeometry geometry, DateTime timestamp)
-      : base(id, timestamp) { Name = name; SymbolType = symbolType; Geometry = geometry; }
-
+        : base(id, timestamp)
+    {
+        Name = name;
+        SymbolType = symbolType;
+        Geometry = geometry;
+    }
 
     public static GeoObject Create(string name, SymbolType symbolType, PointGeometry geometry, Guid? id = null)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new InvalidGeometryException("Object name cannot be empty.");
+            throw new InvalidEntityNameException("Object name cannot be empty.");
         }
 
-        var entity = new GeoObject(id ?? Guid.NewGuid(), name.Trim(), symbolType, geometry, DateTime.UtcNow);
-        return entity;
-    }
+        ArgumentNullException.ThrowIfNull(symbolType);
+        ArgumentNullException.ThrowIfNull(geometry);
 
+        return new GeoObject(id ?? Guid.NewGuid(), name.Trim(), symbolType, geometry, DateTime.UtcNow);
+    }
 
     public void Update(string? name, SymbolType? symbolType, PointGeometry? geometry)
     {
@@ -34,7 +39,7 @@ public sealed class GeoObject : BaseEntity, IAggregateRoot
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new InvalidGeometryException("Object name cannot be empty.");
+                throw new InvalidEntityNameException("Object name cannot be empty.");
             }
             Name = name.Trim();
         }

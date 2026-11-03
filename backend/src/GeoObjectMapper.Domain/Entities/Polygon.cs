@@ -5,7 +5,7 @@ using GeoObjectMapper.Domain.ValueObjects;
 namespace GeoObjectMapper.Domain.Entities;
 
 // Aggregate root representing a map polygon.
-public sealed class Polygon : BaseEntity, IAggregateRoot
+public sealed class Polygon : BaseEntity
 {
     public string Name { get; private set; } = null!;
     public string? Color { get; private set; }
@@ -25,11 +25,13 @@ public sealed class Polygon : BaseEntity, IAggregateRoot
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new InvalidGeometryException("Polygon name cannot be empty.");
+            throw new InvalidEntityNameException("Polygon name cannot be empty.");
         }
 
-        var polygon = new Polygon(id ?? Guid.NewGuid(), name.Trim(), color?.Trim(), geometry, DateTime.UtcNow);
-        return polygon;
+        ArgumentNullException.ThrowIfNull(geometry);
+
+        var normalizedColor = string.IsNullOrWhiteSpace(color) ? null : color.Trim();
+        return new Polygon(id ?? Guid.NewGuid(), name.Trim(), normalizedColor, geometry, DateTime.UtcNow);
     }
 
     public void Update(string? name, string? color, PolygonGeometry? geometry)
@@ -38,7 +40,7 @@ public sealed class Polygon : BaseEntity, IAggregateRoot
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new InvalidGeometryException("Polygon name cannot be empty.");
+                throw new InvalidEntityNameException("Polygon name cannot be empty.");
             }
             Name = name.Trim();
         }

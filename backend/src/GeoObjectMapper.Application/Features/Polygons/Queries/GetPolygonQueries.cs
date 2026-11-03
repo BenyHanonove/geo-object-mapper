@@ -1,15 +1,14 @@
+using GeoObjectMapper.Application.Common.Interfaces;
 using GeoObjectMapper.Application.Common.Mappings;
 using GeoObjectMapper.Application.Common.Models;
 using GeoObjectMapper.Application.DTOs;
 using GeoObjectMapper.Domain.Repositories;
-using MediatR;
 
 namespace GeoObjectMapper.Application.Features.Polygons.Queries;
 
-// Query to get all Polygons.
-public sealed record class GetAllPolygonsQuery : IRequest<Result<IReadOnlyList<PolygonDto>>>;
+public sealed record class GetAllPolygonsQuery : IQuery<IReadOnlyList<PolygonDto>>;
 
-public sealed class GetAllPolygonsQueryHandler : IRequestHandler<GetAllPolygonsQuery, Result<IReadOnlyList<PolygonDto>>>
+public sealed class GetAllPolygonsQueryHandler : IQueryHandler<GetAllPolygonsQuery, IReadOnlyList<PolygonDto>>
 {
     private readonly IPolygonRepository _repository;
 
@@ -29,10 +28,9 @@ public sealed class GetAllPolygonsQueryHandler : IRequestHandler<GetAllPolygonsQ
     }
 }
 
-// Query to get a single Polygon by ID.
-public sealed record class GetPolygonByIdQuery(Guid Id) : IRequest<Result<PolygonDto>>;
+public sealed record class GetPolygonByIdQuery(Guid Id) : IQuery<PolygonDto>;
 
-public sealed class GetPolygonByIdQueryHandler : IRequestHandler<GetPolygonByIdQuery, Result<PolygonDto>>
+public sealed class GetPolygonByIdQueryHandler : IQueryHandler<GetPolygonByIdQuery, PolygonDto>
 {
     private readonly IPolygonRepository _repository;
 

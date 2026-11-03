@@ -54,9 +54,12 @@ public sealed class PolygonsController : ApiControllerBase
             return Failure(result.Error);
         }
 
-        return StatusCode(201, ApiEnvelope<object>.Ok(
-            new { polygon = result.Value },
-            $"Saved \"{result.Value.Name}\" to MongoDB (GeoJSON)."));
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = result.Value.Id },
+            ApiEnvelope<object>.Ok(
+                new { polygon = result.Value },
+                $"Saved \"{result.Value.Name}\" to MongoDB (GeoJSON)."));
     }
 
     /// <summary>Creates several polygons in one request.</summary>
@@ -67,7 +70,7 @@ public sealed class PolygonsController : ApiControllerBase
     {
         var result = await _sender.Send(new CreatePolygonsBatchCommand(dto.Polygons), cancellationToken);
         if (result.IsFailure) return Failure(result.Error);
-        return StatusCode(201, ApiEnvelope<object>.Ok(
+        return StatusCode(StatusCodes.Status201Created, ApiEnvelope<object>.Ok(
             new { polygons = result.Value },
             $"Saved {result.Value.Count} polygons to MongoDB (GeoJSON)."));
     }
@@ -97,21 +100,21 @@ public sealed class PolygonsController : ApiControllerBase
     /// <summary>Deletes a single polygon by id.</summary>
     /// <param name="id">Id of the polygon.</param>
     [HttpDelete("{id:guid}")]
-    [ProducesResponseType(typeof(ApiEnvelope<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new DeletePolygonCommand(id), cancellationToken);
         if (result.IsFailure) return Failure(result.Error);
-        return Ok(ApiEnvelope<bool>.Ok(true, "Deleted from database."));
+        return NoContent();
     }
 
     /// <summary>Deletes all polygons.</summary>
     [HttpDelete]
-    [ProducesResponseType(typeof(ApiEnvelope<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteAll(CancellationToken cancellationToken = default)
     {
         await _sender.Send(new DeleteAllPolygonsCommand(), cancellationToken);
-        return Ok(ApiEnvelope<bool>.Ok(true, "Deleted all polygons from database."));
+        return NoContent();
     }
 }

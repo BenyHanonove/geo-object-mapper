@@ -16,7 +16,7 @@ public sealed class MongoPolygonRepository : IPolygonRepository
 
     private readonly IMongoCollection<PolygonDocument> _collection;
 
-    public MongoPolygonRepository(MongoDbContext context)
+    public MongoPolygonRepository(IMongoDbContext context)
     {
         _collection = context.Polygons;
     }
@@ -48,6 +48,10 @@ public sealed class MongoPolygonRepository : IPolygonRepository
     public async Task AddRangeAsync(IEnumerable<Polygon> entities, CancellationToken cancellationToken = default)
     {
         var docs = entities.Select(ToDocument).ToList();
+        if (docs.Count == 0)
+        {
+            return;
+        }
 
         try
         {

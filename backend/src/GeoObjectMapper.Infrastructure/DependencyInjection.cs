@@ -10,18 +10,15 @@ using MongoDB.Driver;
 
 namespace GeoObjectMapper.Infrastructure;
 
-// Dependency Injection extension for Infrastructure layer.
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // 1. Strongly-typed options with fail-fast startup validation
         services.AddOptions<MongoDbOptions>()
             .Bind(configuration.GetSection(MongoDbOptions.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        // 2. MongoDB client singleton
         services.AddSingleton<IMongoClient>(sp =>
         {
             var options = sp.GetRequiredService<IOptions<MongoDbOptions>>().Value;
@@ -30,13 +27,9 @@ public static class DependencyInjection
             return new MongoClient(settings);
         });
 
-        // 3. Database context
-        services.AddSingleton<MongoDbContext>();
-
-        // 4. Spatial indexes created in the background
+        services.AddSingleton<IMongoDbContext, MongoDbContext>();
         services.AddHostedService<MongoIndexInitializer>();
 
-        // 5. Repositories
         services.AddScoped<IGeoObjectRepository, MongoGeoObjectRepository>();
         services.AddScoped<IPolygonRepository, MongoPolygonRepository>();
 

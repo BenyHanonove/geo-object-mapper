@@ -1,22 +1,20 @@
 using FluentValidation;
+using GeoObjectMapper.Application.Common.Interfaces;
 using GeoObjectMapper.Application.Common.Mappings;
 using GeoObjectMapper.Application.Common.Models;
 using GeoObjectMapper.Application.DTOs;
 using GeoObjectMapper.Application.Features.Polygons.Validators;
 using GeoObjectMapper.Domain.Entities;
 using GeoObjectMapper.Domain.Repositories;
-using MediatR;
 
 namespace GeoObjectMapper.Application.Features.Polygons.Commands;
 
-// CQRS command to create a new Polygon.
 public sealed record class CreatePolygonCommand(
     string Name,
     string? Color,
     PolygonGeometryDto Geometry
-) : IRequest<Result<PolygonDto>>;
+) : ICommand<PolygonDto>;
 
-// Validator for Polygon creation.
 public sealed class CreatePolygonCommandValidator : AbstractValidator<CreatePolygonCommand>
 {
     public CreatePolygonCommandValidator()
@@ -35,8 +33,7 @@ public sealed class CreatePolygonCommandValidator : AbstractValidator<CreatePoly
     }
 }
 
-// Command handler for creating and persisting a Polygon.
-public sealed class CreatePolygonCommandHandler : IRequestHandler<CreatePolygonCommand, Result<PolygonDto>>
+public sealed class CreatePolygonCommandHandler : ICommandHandler<CreatePolygonCommand, PolygonDto>
 {
     private readonly IPolygonRepository _repository;
 

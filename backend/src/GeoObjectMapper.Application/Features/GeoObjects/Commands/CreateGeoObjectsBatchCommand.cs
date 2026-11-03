@@ -1,4 +1,5 @@
 using FluentValidation;
+using GeoObjectMapper.Application.Common.Interfaces;
 using GeoObjectMapper.Application.Common.Mappings;
 using GeoObjectMapper.Application.Common.Models;
 using GeoObjectMapper.Application.DTOs;
@@ -6,16 +7,13 @@ using GeoObjectMapper.Application.Features.GeoObjects.Validators;
 using GeoObjectMapper.Domain.Entities;
 using GeoObjectMapper.Domain.Repositories;
 using GeoObjectMapper.Domain.ValueObjects;
-using MediatR;
 
 namespace GeoObjectMapper.Application.Features.GeoObjects.Commands;
 
-// CQRS command for batch creating GeoObjects.
 public sealed record class CreateGeoObjectsBatchCommand(
     IReadOnlyList<CreateGeoObjectDto> Objects
-) : IRequest<Result<IReadOnlyList<GeoObjectDto>>>;
+) : ICommand<IReadOnlyList<GeoObjectDto>>;
 
-// Validator for batch payload reusing the shared CreateGeoObjectDtoValidator.
 public sealed class CreateGeoObjectsBatchCommandValidator : AbstractValidator<CreateGeoObjectsBatchCommand>
 {
     public CreateGeoObjectsBatchCommandValidator()
@@ -29,9 +27,8 @@ public sealed class CreateGeoObjectsBatchCommandValidator : AbstractValidator<Cr
     }
 }
 
-// Command handler for batch creation.
 public sealed class CreateGeoObjectsBatchCommandHandler
-    : IRequestHandler<CreateGeoObjectsBatchCommand, Result<IReadOnlyList<GeoObjectDto>>>
+    : ICommandHandler<CreateGeoObjectsBatchCommand, IReadOnlyList<GeoObjectDto>>
 {
     private readonly IGeoObjectRepository _repository;
 

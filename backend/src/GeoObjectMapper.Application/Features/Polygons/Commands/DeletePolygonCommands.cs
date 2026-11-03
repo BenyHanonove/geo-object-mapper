@@ -1,13 +1,12 @@
+using GeoObjectMapper.Application.Common.Interfaces;
 using GeoObjectMapper.Application.Common.Models;
 using GeoObjectMapper.Domain.Repositories;
-using MediatR;
 
 namespace GeoObjectMapper.Application.Features.Polygons.Commands;
 
-// Command deleting a single Polygon by ID.
-public sealed record class DeletePolygonCommand(Guid Id) : IRequest<Result<bool>>;
+public sealed record class DeletePolygonCommand(Guid Id) : ICommand<bool>;
 
-public sealed class DeletePolygonCommandHandler : IRequestHandler<DeletePolygonCommand, Result<bool>>
+public sealed class DeletePolygonCommandHandler : ICommandHandler<DeletePolygonCommand, bool>
 {
     private readonly IPolygonRepository _repository;
 
@@ -30,10 +29,9 @@ public sealed class DeletePolygonCommandHandler : IRequestHandler<DeletePolygonC
     }
 }
 
-// Command deleting all Polygons (matching DELETE /polygons).
-public sealed record class DeleteAllPolygonsCommand : IRequest<Result<bool>>;
+public sealed record class DeleteAllPolygonsCommand : ICommand<bool>;
 
-public sealed class DeleteAllPolygonsCommandHandler : IRequestHandler<DeleteAllPolygonsCommand, Result<bool>>
+public sealed class DeleteAllPolygonsCommandHandler : ICommandHandler<DeleteAllPolygonsCommand, bool>
 {
     private readonly IPolygonRepository _repository;
 

@@ -6,19 +6,23 @@ using MongoDB.Driver;
 
 namespace GeoObjectMapper.Infrastructure.Persistence.Context;
 
-// BSON document representing GeoObject stored in MongoDB with 2dsphere index.
+[BsonIgnoreExtraElements]
 public class GeoObjectDocument
 {
     [BsonId]
     [BsonRepresentation(BsonType.String)]
     public Guid Id { get; set; }
 
+    [BsonElement("name")]
     public string Name { get; set; } = string.Empty;
 
+    [BsonElement("symbolType")]
     public string SymbolType { get; set; } = string.Empty;
 
+    [BsonElement("geometry")]
     public GeoJsonPointDocument Geometry { get; set; } = new();
 
+    [BsonElement("timestamp")]
     public DateTime Timestamp { get; set; }
 }
 
@@ -31,19 +35,23 @@ public class GeoJsonPointDocument
     public double[] Coordinates { get; set; } = []; // [longitude, latitude]
 }
 
-// BSON document representing Polygon stored in MongoDB with 2dsphere index.
+[BsonIgnoreExtraElements]
 public class PolygonDocument
 {
     [BsonId]
     [BsonRepresentation(BsonType.String)]
     public Guid Id { get; set; }
 
+    [BsonElement("name")]
     public string Name { get; set; } = string.Empty;
 
+    [BsonElement("color")]
     public string? Color { get; set; }
 
+    [BsonElement("geometry")]
     public GeoJsonPolygonDocument Geometry { get; set; } = new();
 
+    [BsonElement("timestamp")]
     public DateTime Timestamp { get; set; }
 }
 
@@ -56,8 +64,7 @@ public class GeoJsonPolygonDocument
     public double[][][] Coordinates { get; set; } = [];
 }
 
-// MongoDB database context providing typed collections.
-public class MongoDbContext
+public sealed class MongoDbContext : IMongoDbContext
 {
     private readonly IMongoDatabase _database;
     public IMongoCollection<GeoObjectDocument> GeoObjects { get; }
@@ -69,5 +76,4 @@ public class MongoDbContext
         GeoObjects = _database.GetCollection<GeoObjectDocument>(options.Value.ObjectsCollectionName);
         Polygons = _database.GetCollection<PolygonDocument>(options.Value.PolygonsCollectionName);
     }
-
 }

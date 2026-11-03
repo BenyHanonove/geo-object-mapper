@@ -1,16 +1,14 @@
+using GeoObjectMapper.Application.Common.Interfaces;
 using GeoObjectMapper.Application.Common.Mappings;
 using GeoObjectMapper.Application.Common.Models;
 using GeoObjectMapper.Application.DTOs;
 using GeoObjectMapper.Domain.Repositories;
-using MediatR;
 
 namespace GeoObjectMapper.Application.Features.GeoObjects.Queries;
 
-// Query to get all GeoObjects.
-public sealed record class GetAllGeoObjectsQuery : IRequest<Result<IReadOnlyList<GeoObjectDto>>>;
+public sealed record class GetAllGeoObjectsQuery : IQuery<IReadOnlyList<GeoObjectDto>>;
 
-// Query handler fetching all GeoObjects.
-public sealed class GetAllGeoObjectsQueryHandler : IRequestHandler<GetAllGeoObjectsQuery, Result<IReadOnlyList<GeoObjectDto>>>
+public sealed class GetAllGeoObjectsQueryHandler : IQueryHandler<GetAllGeoObjectsQuery, IReadOnlyList<GeoObjectDto>>
 {
     private readonly IGeoObjectRepository _repository;
 
@@ -30,11 +28,9 @@ public sealed class GetAllGeoObjectsQueryHandler : IRequestHandler<GetAllGeoObje
     }
 }
 
-// Query to get a single GeoObject by ID.
-public sealed record class GetGeoObjectByIdQuery(Guid Id) : IRequest<Result<GeoObjectDto>>;
+public sealed record class GetGeoObjectByIdQuery(Guid Id) : IQuery<GeoObjectDto>;
 
-// Query handler fetching a single GeoObject by ID.
-public sealed class GetGeoObjectByIdQueryHandler : IRequestHandler<GetGeoObjectByIdQuery, Result<GeoObjectDto>>
+public sealed class GetGeoObjectByIdQueryHandler : IQueryHandler<GetGeoObjectByIdQuery, GeoObjectDto>
 {
     private readonly IGeoObjectRepository _repository;
 

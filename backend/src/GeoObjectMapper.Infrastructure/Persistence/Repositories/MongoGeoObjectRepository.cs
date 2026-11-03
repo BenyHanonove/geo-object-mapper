@@ -12,7 +12,7 @@ public sealed class MongoGeoObjectRepository : IGeoObjectRepository
 {
     private readonly IMongoCollection<GeoObjectDocument> _collection;
 
-    public MongoGeoObjectRepository(MongoDbContext context) => _collection = context.GeoObjects;
+    public MongoGeoObjectRepository(IMongoDbContext context) => _collection = context.GeoObjects;
 
     public async Task<GeoObject?> GetByIdAsync(
         Guid id,
@@ -28,15 +28,19 @@ public sealed class MongoGeoObjectRepository : IGeoObjectRepository
         return docs.Select(ToDomain).ToList().AsReadOnly();
     }
 
-    public async Task AddAsync(
-   GeoObject entity, CancellationToken cancellationToken)
+    public async Task AddAsync(GeoObject entity, CancellationToken cancellationToken = default)
     {
         await _collection.InsertOneAsync(ToDocument(entity), cancellationToken: cancellationToken);
     }
 
-    public async Task AddRangeAsync(IEnumerable<GeoObject> entities, CancellationToken cancellationToken)
+    public async Task AddRangeAsync(IEnumerable<GeoObject> entities, CancellationToken cancellationToken = default)
     {
-        var docs = entities.Select(ToDocument);
+        var docs = entities.Select(ToDocument).ToList();
+        if (docs.Count == 0)
+        {
+            return;
+        }
+
         await _collection.InsertManyAsync(docs, cancellationToken: cancellationToken);
     }
 

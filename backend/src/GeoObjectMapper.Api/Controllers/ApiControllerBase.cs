@@ -8,6 +8,19 @@ public abstract class ApiControllerBase : ControllerBase
 {
     protected IActionResult Failure(Error error)
     {
+        if (error.ValidationErrors is { Count: > 0 })
+        {
+            var problemDetails = new ValidationProblemDetails(
+                error.ValidationErrors.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Detail = error.Description,
+                Instance = Request.Path
+            };
+
+            return BadRequest(problemDetails);
+        }
+
         var statusCode = error.Code switch
         {
             "Conflict.VersionMismatch" => StatusCodes.Status409Conflict,

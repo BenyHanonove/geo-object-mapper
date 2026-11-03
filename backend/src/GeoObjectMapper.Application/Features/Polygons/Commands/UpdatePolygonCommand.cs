@@ -1,22 +1,20 @@
 using FluentValidation;
+using GeoObjectMapper.Application.Common.Interfaces;
 using GeoObjectMapper.Application.Common.Mappings;
 using GeoObjectMapper.Application.Common.Models;
 using GeoObjectMapper.Application.DTOs;
 using GeoObjectMapper.Application.Features.Polygons.Validators;
 using GeoObjectMapper.Domain.Repositories;
-using MediatR;
 
 namespace GeoObjectMapper.Application.Features.Polygons.Commands;
 
-// CQRS command to update a Polygon with optimistic concurrency.
 public sealed record class UpdatePolygonCommand(
     Guid Id,
     string? Name,
     string? Color,
     PolygonGeometryDto? Geometry,
-    string Timestamp) : IRequest<Result<PolygonDto>>;
+    string Timestamp) : ICommand<PolygonDto>;
 
-// Validator for UpdatePolygonCommand.
 public sealed class UpdatePolygonCommandValidator : AbstractValidator<UpdatePolygonCommand>
 {
     public UpdatePolygonCommandValidator()
@@ -46,8 +44,7 @@ public sealed class UpdatePolygonCommandValidator : AbstractValidator<UpdatePoly
     }
 }
 
-// Command handler updating the Polygon with timestamp check.
-public sealed class UpdatePolygonCommandHandler : IRequestHandler<UpdatePolygonCommand, Result<PolygonDto>>
+public sealed class UpdatePolygonCommandHandler : ICommandHandler<UpdatePolygonCommand, PolygonDto>
 {
     private readonly IPolygonRepository _repository;
 

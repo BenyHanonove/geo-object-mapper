@@ -1,20 +1,18 @@
 using FluentValidation;
+using GeoObjectMapper.Application.Common.Interfaces;
 using GeoObjectMapper.Application.Common.Mappings;
 using GeoObjectMapper.Application.Common.Models;
 using GeoObjectMapper.Application.DTOs;
 using GeoObjectMapper.Application.Features.Polygons.Validators;
 using GeoObjectMapper.Domain.Entities;
 using GeoObjectMapper.Domain.Repositories;
-using MediatR;
 
 namespace GeoObjectMapper.Application.Features.Polygons.Commands;
 
-// CQRS command for batch creating Polygons.
 public sealed record class CreatePolygonsBatchCommand(
     IReadOnlyList<CreatePolygonDto> Polygons
-) : IRequest<Result<IReadOnlyList<PolygonDto>>>;
+) : ICommand<IReadOnlyList<PolygonDto>>;
 
-// Validator for batch payload reusing the shared CreatePolygonDtoValidator.
 public sealed class CreatePolygonsBatchCommandValidator : AbstractValidator<CreatePolygonsBatchCommand>
 {
     public CreatePolygonsBatchCommandValidator()
@@ -28,9 +26,8 @@ public sealed class CreatePolygonsBatchCommandValidator : AbstractValidator<Crea
     }
 }
 
-// Command handler for batch creation.
 public sealed class CreatePolygonsBatchCommandHandler
-    : IRequestHandler<CreatePolygonsBatchCommand, Result<IReadOnlyList<PolygonDto>>>
+    : ICommandHandler<CreatePolygonsBatchCommand, IReadOnlyList<PolygonDto>>
 {
     private readonly IPolygonRepository _repository;
 

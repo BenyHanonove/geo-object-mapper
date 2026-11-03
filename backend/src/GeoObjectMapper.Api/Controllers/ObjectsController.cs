@@ -46,7 +46,10 @@ public sealed class ObjectsController : ApiControllerBase
 
         if (result.IsFailure) return Failure(result.Error);
 
-        return StatusCode(201, ApiEnvelope<object>.Ok(new { @object = result.Value }, $"Saved \"{result.Value.Name}\" to MongoDB (GeoJSON)."));
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = result.Value.Id },
+            ApiEnvelope<object>.Ok(new { @object = result.Value }, $"Saved \"{result.Value.Name}\" to MongoDB (GeoJSON)."));
     }
 
     /// <summary>Creates several objects in one request.</summary>
@@ -57,7 +60,7 @@ public sealed class ObjectsController : ApiControllerBase
     {
         var result = await _sender.Send(new CreateGeoObjectsBatchCommand(dto.Objects), cancellationToken);
         if (result.IsFailure) return Failure(result.Error);
-        return StatusCode(201, ApiEnvelope<object>.Ok(
+        return StatusCode(StatusCodes.Status201Created, ApiEnvelope<object>.Ok(
             new { objects = result.Value },
             $"Saved {result.Value.Count} objects to MongoDB (GeoJSON)."));
     }
@@ -76,8 +79,7 @@ public sealed class ObjectsController : ApiControllerBase
             dto.Name,
             dto.SymbolType,
             dto.Geometry,
-            dto.Timestamp
-            );
+            dto.Timestamp);
 
         var result = await _sender.Send(command, cancellationToken);
         if (result.IsFailure) return Failure(result.Error);
@@ -87,24 +89,22 @@ public sealed class ObjectsController : ApiControllerBase
     /// <summary>Deletes a single object by id.</summary>
     /// <param name="id">Id of the object.</param>
     [HttpDelete("{id:guid}")]
-    [ProducesResponseType(typeof(ApiEnvelope<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new DeleteGeoObjectCommand(id), cancellationToken);
         if (result.IsFailure) return Failure(result.Error);
-        return Ok(ApiEnvelope<bool>.Ok(true, "Deleted from database."));
+        return NoContent();
     }
 
     /// <summary>Deletes all objects.</summary>
     [HttpDelete]
-    [ProducesResponseType(typeof(ApiEnvelope<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteAll(CancellationToken cancellationToken = default)
     {
         await _sender.Send(new DeleteAllGeoObjectsCommand(), cancellationToken);
-        return Ok(ApiEnvelope<bool>.Ok(true, "Deleted all map objects from database."));
+        return NoContent();
     }
-
-
 }
 

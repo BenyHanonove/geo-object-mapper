@@ -1,13 +1,12 @@
+using GeoObjectMapper.Application.Common.Interfaces;
 using GeoObjectMapper.Application.Common.Models;
 using GeoObjectMapper.Domain.Repositories;
-using MediatR;
 
 namespace GeoObjectMapper.Application.Features.GeoObjects.Commands;
 
-// Command deleting a single GeoObject by ID.
-public sealed record class DeleteGeoObjectCommand(Guid Id) : IRequest<Result<bool>>;
+public sealed record class DeleteGeoObjectCommand(Guid Id) : ICommand<bool>;
 
-public sealed class DeleteGeoObjectCommandHandler : IRequestHandler<DeleteGeoObjectCommand, Result<bool>>
+public sealed class DeleteGeoObjectCommandHandler : ICommandHandler<DeleteGeoObjectCommand, bool>
 {
     private readonly IGeoObjectRepository _repository;
 
@@ -30,10 +29,9 @@ public sealed class DeleteGeoObjectCommandHandler : IRequestHandler<DeleteGeoObj
     }
 }
 
-// Command deleting all GeoObjects (matching DELETE /objects).
-public sealed record class DeleteAllGeoObjectsCommand : IRequest<Result<bool>>;
+public sealed record class DeleteAllGeoObjectsCommand : ICommand<bool>;
 
-public sealed class DeleteAllGeoObjectsCommandHandler : IRequestHandler<DeleteAllGeoObjectsCommand, Result<bool>>
+public sealed class DeleteAllGeoObjectsCommandHandler : ICommandHandler<DeleteAllGeoObjectsCommand, bool>
 {
     private readonly IGeoObjectRepository _repository;
 

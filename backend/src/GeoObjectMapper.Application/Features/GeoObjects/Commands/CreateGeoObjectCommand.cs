@@ -1,4 +1,5 @@
 using FluentValidation;
+using GeoObjectMapper.Application.Common.Interfaces;
 using GeoObjectMapper.Application.Common.Mappings;
 using GeoObjectMapper.Application.Common.Models;
 using GeoObjectMapper.Application.DTOs;
@@ -6,18 +7,15 @@ using GeoObjectMapper.Application.Features.GeoObjects.Validators;
 using GeoObjectMapper.Domain.Entities;
 using GeoObjectMapper.Domain.Repositories;
 using GeoObjectMapper.Domain.ValueObjects;
-using MediatR;
 
 namespace GeoObjectMapper.Application.Features.GeoObjects.Commands;
 
-// CQRS command to create a new GeoObject.
 public sealed record class CreateGeoObjectCommand(
     string Name,
     string SymbolType,
     PointGeometryDto Geometry
-) : IRequest<Result<GeoObjectDto>>;
+) : ICommand<GeoObjectDto>;
 
-// Fail-fast validator for CreateGeoObjectCommand.
 public sealed class CreateGeoObjectCommandValidator : AbstractValidator<CreateGeoObjectCommand>
 {
     public CreateGeoObjectCommandValidator()
@@ -36,8 +34,7 @@ public sealed class CreateGeoObjectCommandValidator : AbstractValidator<CreateGe
     }
 }
 
-// Command handler creating and persisting the GeoObject.
-public sealed class CreateGeoObjectCommandHandler : IRequestHandler<CreateGeoObjectCommand, Result<GeoObjectDto>>
+public sealed class CreateGeoObjectCommandHandler : ICommandHandler<CreateGeoObjectCommand, GeoObjectDto>
 {
     private readonly IGeoObjectRepository _repository;
 

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Reflection;
 using FluentValidation;
 using GeoObjectMapper.Application.Common.Models;
@@ -10,6 +11,8 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
     where TRequest : notnull
     where TResponse : Result
 {
+    private static readonly Func<Error, TResponse> FailureFactory = BuildFailureFactory();
+
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
     public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
@@ -38,19 +41,25 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
 
         if (failures.Count != 0)
         {
-            var errorMessage = string.Join("; ", failures.Select(f => f.ErrorMessage));
-            var error = Error.Validation(errorMessage);
-            return CreateFailureResponse(error);
+            var validationErrors = failures
+                .GroupBy(f => string.IsNullOrWhiteSpace(f.PropertyName) ? "general" : f.PropertyName)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(f => f.ErrorMessage).Distinct().ToArray());
+
+            var errorMessage = string.Join("; ", failures.Select(f => f.ErrorMessage).Distinct());
+            var error = Error.Validation(errorMessage, validationErrors);
+            return FailureFactory(error);
         }
 
         return await next();
     }
 
-    private static TResponse CreateFailureResponse(Error error)
+    private static Func<Error, TResponse> BuildFailureFactory()
     {
         if (typeof(TResponse) == typeof(Result))
         {
-            return (TResponse)(object)Result.Failure(error);
+            return error => (TResponse)(object)Result.Failure(error);
         }
 
         var valueType = typeof(TResponse).GetGenericArguments()[0];
@@ -59,6 +68,9 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             .First(m => m.Name == nameof(Result.Failure) && m.IsGenericMethod)
             .MakeGenericMethod(valueType);
 
-        return (TResponse)failureMethod.Invoke(null, [error])!;
+        var errorParam = Expression.Parameter(typeof(Error), "error");
+        var call = Expression.Call(failureMethod, errorParam);
+        var cast = Expression.Convert(call, typeof(TResponse));
+        return Expression.Lambda<Func<Error, TResponse>>(cast, errorParam).Compile();
     }
 }
