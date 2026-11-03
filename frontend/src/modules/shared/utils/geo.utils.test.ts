@@ -1,7 +1,5 @@
-// Unit test framework imports
 import { describe, expect, it } from 'vitest'
 
-// Local sibling module and definition imports
 import {
   computePolygonCentroid,
   geoJsonPolygonToVertices,

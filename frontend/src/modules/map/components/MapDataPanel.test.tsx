@@ -1,18 +1,13 @@
-// Testing library matchers and cleanup imports
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-// Typed application environment configuration imports
 import { AppThemeProvider } from '@plugins'
 
-// Shared application components and services imports
 import { loadAppData } from '@shared/services/app-init.service'
 
-// Global Zustand stores and helpers imports
 import { useGeoObjectsStore, usePolygonsStore } from '@stores'
 
-// Local sibling module and definition imports
 import { MapDataPanel } from './MapDataPanel'
 
 vi.mock('@shared/services/app-init.service', () => ({ loadAppData: vi.fn() }))

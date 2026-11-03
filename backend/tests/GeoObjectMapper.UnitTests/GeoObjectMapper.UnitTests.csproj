@@ -14,8 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\GeoObjectMapper.Api\GeoObjectMapper.Api.csproj" />
     <ProjectReference Include="..\..\src\GeoObjectMapper.Application\GeoObjectMapper.Application.csproj" />
     <ProjectReference Include="..\..\src\GeoObjectMapper.Domain\GeoObjectMapper.Domain.csproj" />
+    <ProjectReference Include="..\..\src\GeoObjectMapper.Infrastructure\GeoObjectMapper.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

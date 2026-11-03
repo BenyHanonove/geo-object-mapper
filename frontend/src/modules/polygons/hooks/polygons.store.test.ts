@@ -1,7 +1,5 @@
-// Unit test framework imports
 import { beforeEach, describe, expect, it } from 'vitest'
 
-// Local sibling module and definition imports
 import { usePolygonsStore } from './polygons.store'
 
 // Three vertices forming a valid triangle
