@@ -1,4 +1,3 @@
-// Local type and interface definition imports
 import type { GeoPosition, IGeoJsonPoint, IGeoJsonPolygon, ILatLon } from '@shared/types/geojson.types'
 
 // Keep value inside an inclusive range

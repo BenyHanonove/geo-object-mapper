@@ -1,20 +1,25 @@
-// Object feature module implementation imports
 import { geoObjectProvider } from '@objects/providers/geoObject.provider'
-
-// Polygon feature module implementation imports
 import { polygonProvider } from '@polygons/providers/polygon.provider'
-
-// Shared application components and services imports
 import { MESSAGES } from '@shared/constants/messages'
-
-// Global Zustand stores and helpers imports
 import { useGeoObjectsStore, usePolygonsStore, useSnackbarStore } from '@stores'
+import type { IGeoObjectProvider } from '@objects/types/IGeoObjectProvider.types'
+import type { IPolygonProvider } from '@polygons/types/IPolygonProvider.types'
 
-// Deduplicates concurrent app data load calls
+export interface IAppInitProviders {
+  polygons: IPolygonProvider
+  objects: IGeoObjectProvider
+}
+
+const defaultProviders: IAppInitProviders = {
+  polygons: polygonProvider,
+  objects: geoObjectProvider,
+}
+
 let initPromise: Promise<void> | null = null
 
-// Load polygons and objects into stores
-export const loadAppData = async (): Promise<void> => {
+export const loadAppData = async (
+  providers: IAppInitProviders = defaultProviders,
+): Promise<void> => {
   if (initPromise) return initPromise
 
   initPromise = (async () => {
@@ -25,8 +30,8 @@ export const loadAppData = async (): Promise<void> => {
     objectsStore.setLoading(true)
 
     const [polygonsResult, objectsResult] = await Promise.all([
-      polygonProvider.list(),
-      geoObjectProvider.list(),
+      providers.polygons.list(),
+      providers.objects.list(),
     ])
 
     if (polygonsResult.success && polygonsResult.data) {

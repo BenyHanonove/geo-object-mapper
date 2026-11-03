@@ -1,4 +1,3 @@
-// Material UI components and styling imports
 import AddLocationAltRoundedIcon from '@mui/icons-material/AddLocationAltRounded'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded'
@@ -16,21 +15,16 @@ import {
 } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
-// Object feature module implementation imports
 import { OBJECT_SYMBOL_LABEL_MAP, OBJECT_SYMBOL_OPTIONS } from '@objects/constants/object.constants'
 import { useGeoObjectCrud } from '@objects/hooks/geoObject.crud'
 
-// Shared application components and services imports
 import { AppButton, AppCard, AppDialog, StatusChip } from '@shared/components'
 
-// Global Zustand stores and helpers imports
 import { useMapWorkspaceStore } from '@stores'
 
-// Local sibling module and definition imports
 import { ObjectEditForm } from './ObjectEditForm'
 import { ObjectSymbolIcon } from './ObjectSymbolIcon'
 
-// Local type and interface definition imports
 import type { ObjectSymbolType } from '@objects/types/IGeoObject.types'
 
 // Panel for placing and managing map objects

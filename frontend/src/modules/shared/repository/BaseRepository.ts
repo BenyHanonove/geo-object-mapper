@@ -1,18 +1,14 @@
-// HTTP client and status code imports
 import type { AxiosResponse } from 'axios'
-
-// Local sibling module and definition imports
 import { httpClient } from './httpClient'
-
-// Local type and interface definition imports
+import type { ICrudRepository } from '@shared/providers/BaseCrudProvider'
 import type { IApiEnvelope, IApiResponse } from '@shared/types/api.types'
 
-// Type guard for plain object values
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
 
-// Generic REST repository unwrapping API envelopes
-export class BaseRepository<TEntity, TCreate, TUpdate> {
+export class BaseRepository<TEntity, TCreate, TUpdate>
+  implements ICrudRepository<TEntity, TCreate, TUpdate>
+{
   protected readonly endpoint: string
   protected readonly collectionKey: string
   protected readonly itemKey: string

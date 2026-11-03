@@ -1,12 +1,9 @@
-// Material UI components and styling imports
 import { alpha, createTheme } from '@mui/material/styles'
 import type { Theme } from '@mui/material/styles'
 
-// Local sibling module and definition imports
 import { DARK_PALETTE, DEFAULT_MAP_TOKENS, FONT_FAMILIES, LIGHT_PALETTE } from './tokens'
 import type { IMapThemeTokens, ThemeMode } from './tokens'
 
-// Typed application environment configuration imports
 import { env } from '@plugins/env'
 
 // Extend MUI theme with custom tokens

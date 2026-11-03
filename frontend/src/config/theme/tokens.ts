@@ -1,7 +1,6 @@
 // Supported application color scheme modes
 export type ThemeMode = 'light' | 'dark'
 
-
 // Color tokens for map overlay elements
 export interface IMapThemeTokens {
   polygonSavedStroke: string

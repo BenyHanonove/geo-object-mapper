@@ -1,4 +1,3 @@
-// Local type and interface definition imports
 import type { ObjectSymbolType } from '@objects/types/IGeoObject.types'
 
 // Entity kinds shown on the map

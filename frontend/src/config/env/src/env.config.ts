@@ -1,4 +1,3 @@
-// Local sibling module and definition imports
 import {
   AppDirection,
   AppEnvironment,
@@ -24,7 +23,6 @@ const readNumber = (key: EnvKey, fallback: number): number => {
   return Number.isFinite(parsed) ? parsed : fallback
 }
 
-
 // Validate value against allowed enum members
 const readEnum = <TEnum extends string>(
   key: EnvKey,
@@ -34,7 +32,6 @@ const readEnum = <TEnum extends string>(
   const raw = rawEnv[key]?.trim() as TEnum | undefined
   return raw && allowedValues.includes(raw) ? raw : fallback
 }
-
 
 // Frozen typed environment configuration singleton
 export const env: IEnvConfig = Object.freeze({

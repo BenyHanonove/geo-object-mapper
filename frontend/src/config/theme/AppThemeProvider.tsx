@@ -1,14 +1,10 @@
-// Core React ecosystem library imports
 import { useMemo, useSyncExternalStore, type ReactNode } from 'react'
 
-// Material UI components and styling imports
 import { CssBaseline, ThemeProvider } from '@mui/material'
 
-// Local sibling module and definition imports
 import { buildAppTheme } from './theme'
 import { ThemeModeContext } from './themeMode.context'
 
-// Local type and interface definition imports
 import type { ThemeMode } from './tokens'
 
 // Media query detecting system dark preference

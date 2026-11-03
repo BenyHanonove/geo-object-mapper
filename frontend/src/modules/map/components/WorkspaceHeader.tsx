@@ -1,8 +1,6 @@
-// Material UI components and styling imports
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded'
 import { Box, Paper, Stack, Typography } from '@mui/material'
 
-// Typed application environment configuration imports
 import { env } from '@plugins'
 
 // Top header with application name

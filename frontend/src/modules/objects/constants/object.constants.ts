@@ -1,4 +1,3 @@
-// Object feature module implementation imports
 import { ObjectSymbolType } from '@objects/types/IGeoObject.types'
 
 // Display metadata for one object symbol

@@ -1,17 +1,12 @@
-// Zustand state management library imports
 import { create } from 'zustand'
 
-// Object feature module implementation imports
 import { OBJECT_SYMBOL_LABEL_MAP } from '@objects/constants/object.constants'
 import { ObjectSymbolType } from '@objects/types/IGeoObject.types'
 
-// Shared application components and services imports
 import { createGeoJsonPoint } from '@shared/utils/geo.utils'
 
-// Global Zustand stores and helpers imports
 import { createEntityStore, nextAvailableName, sortByLocale } from '@stores/utils/createEntityStore'
 
-// Local type and interface definition imports
 import type { IDraftGeoObject, IGeoObject } from '@objects/types/IGeoObject.types'
 import type { ILatLon } from '@shared/types/geojson.types'
 import type { IEntityState } from '@stores/utils/createEntityStore'

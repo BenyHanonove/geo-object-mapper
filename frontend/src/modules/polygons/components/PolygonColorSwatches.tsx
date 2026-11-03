@@ -1,7 +1,5 @@
-// Material UI components and styling imports
 import { Box, Stack, Tooltip } from '@mui/material'
 
-// Application theme design token imports
 import { POLYGON_SWATCH_TOKENS } from '@plugins'
 
 // Props for the polygon color picker

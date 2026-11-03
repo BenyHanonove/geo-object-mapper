@@ -1,4 +1,3 @@
-// Material UI components and styling imports
 import CloudOffRoundedIcon from '@mui/icons-material/CloudOffRounded'
 import LayersClearRoundedIcon from '@mui/icons-material/LayersClearRounded'
 import PentagonRoundedIcon from '@mui/icons-material/PentagonRounded'
@@ -6,22 +5,17 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { Box, InputAdornment, Stack, TextField, Typography } from '@mui/material'
 
-// Map feature module implementation imports
 import { MAP_PANEL_COPY } from '@map/constants/map.constants'
 import { useMapDataRows } from '@map/hooks/mapData.calc'
 
-// Object feature module implementation imports
 import { ObjectSymbolIcon } from '@objects/components/ObjectSymbolIcon'
 
-// Shared application components and services imports
 import { AppButton, AppCard, AppTable, EmptyState, StatusChip } from '@shared/components'
 import { useSearch } from '@shared/hooks/useSearch'
 import { loadAppData } from '@shared/services/app-init.service'
 
-// Global Zustand stores and helpers imports
 import { useMapWorkspaceStore } from '@stores'
 
-// Local type and interface definition imports
 import type { IMapDataRow } from '@map/types/IMapWorkspace.types'
 import type { ITableHeader } from '@shared/types/ui.types'
 

@@ -1,7 +1,5 @@
-// Core React ecosystem library imports
 import type { ReactNode } from 'react'
 
-// Material UI components and styling imports
 import { Box, Stack, Typography } from '@mui/material'
 
 // Props for the empty placeholder state

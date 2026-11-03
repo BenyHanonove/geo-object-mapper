@@ -1,8 +1,6 @@
-// Material UI components and styling imports
 import { SvgIcon } from '@mui/material'
 import type { SvgIconProps } from '@mui/material'
 
-// Object feature module implementation imports
 import { ObjectSymbolType } from '@objects/types/IGeoObject.types'
 
 // Icon props with required symbol type

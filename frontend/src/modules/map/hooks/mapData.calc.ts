@@ -1,10 +1,7 @@
-// Core React ecosystem library imports
 import { useMemo } from 'react'
 
-// Object feature module implementation imports
 import { OBJECT_SYMBOL_LABEL_MAP } from '@objects/constants/object.constants'
 
-// Shared application components and services imports
 import {
   calculatePolygonAreaKm2,
   computePolygonCentroid,
@@ -13,10 +10,8 @@ import {
   geoJsonPolygonToVertices,
 } from '@shared/utils/geo.utils'
 
-// Global Zustand stores and helpers imports
 import { useGeoObjectsStore, usePolygonsStore } from '@stores'
 
-// Local type and interface definition imports
 import type { IMapDataRow } from '@map/types/IMapWorkspace.types'
 
 // Derives unified Map Data rows (Object / Lat / Lon) strictly from saved server entities

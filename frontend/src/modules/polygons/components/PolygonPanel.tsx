@@ -1,4 +1,3 @@
-// Material UI components and styling imports
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded'
@@ -9,16 +8,12 @@ import UndoRoundedIcon from '@mui/icons-material/UndoRounded'
 import { Box, IconButton, Stack, TextField, Tooltip, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
-// Polygon feature module implementation imports
 import { usePolygonCrud } from '@polygons/hooks/polygon.crud'
 
-// Shared application components and services imports
 import { AppButton, AppCard, AppDialog, StatusChip } from '@shared/components'
 
-// Global Zustand stores and helpers imports
 import { useMapWorkspaceStore } from '@stores'
 
-// Local sibling module and definition imports
 import { PolygonColorSwatches } from './PolygonColorSwatches'
 import { PolygonEditForm } from './PolygonEditForm'
 

@@ -1,4 +1,3 @@
-// Core React ecosystem library imports
 import { useMemo, useState } from 'react'
 
 // Filter items by query across keys

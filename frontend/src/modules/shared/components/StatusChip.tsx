@@ -1,4 +1,3 @@
-// Material UI components and styling imports
 import { Chip } from '@mui/material'
 import type { ChipProps } from '@mui/material'
 

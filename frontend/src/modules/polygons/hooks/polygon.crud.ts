@@ -1,29 +1,18 @@
-// Core React ecosystem library imports
 import { useCallback, useState } from 'react'
-
-// HTTP client and status code imports
 import { StatusCodes } from 'http-status-codes'
-
-// Polygon feature module implementation imports
 import { POLYGON_MESSAGES } from '@polygons/constants/polygon.constants'
 import { polygonProvider } from '@polygons/providers/polygon.provider'
-
-// Shared application components and services imports
 import { useSnackbar } from '@shared/hooks/snackbar.store'
 import {
   geoJsonPolygonToVertices,
   verticesToClosedGeoJsonPolygon,
 } from '@shared/utils/geo.utils'
-
-// Global Zustand stores and helpers imports
 import { useGeoObjectsStore, useMapWorkspaceStore, usePolygonsStore } from '@stores'
-
-// Local type and interface definition imports
 import type { ICreatePolygon } from '@polygons/types/IPolygon.types'
+import type { IPolygonProvider } from '@polygons/types/IPolygonProvider.types'
 import type { ILatLon } from '@shared/types/geojson.types'
 
-// Polygon drawing, save, update and delete handlers
-export const usePolygonCrud = () => {
+export const usePolygonCrud = (provider: IPolygonProvider = polygonProvider) => {
   const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false)
   const { notifySuccess, notifyError, notifyInfo, notifyWarning } = useSnackbar()
 
@@ -138,7 +127,7 @@ export const usePolygonCrud = () => {
     }))
 
     setIsSaving(true)
-    const result = await polygonProvider.save(payloads)
+    const result = await provider.save(payloads)
     setIsSaving(false)
 
     if (!result.success || !result.data) {
@@ -153,6 +142,7 @@ export const usePolygonCrud = () => {
     clearSelectionOf('polygon', savedTempIds)
     notifySuccess(result.message || POLYGON_MESSAGES.SAVED_FALLBACK)
   }, [
+    provider,
     closeActivePolygon,
     notifyWarning,
     notifyInfo,
@@ -166,7 +156,7 @@ export const usePolygonCrud = () => {
 
   const reloadPolygon = useCallback(
     async (id: string) => {
-      const result = await polygonProvider.get(id)
+      const result = await provider.get(id)
       if (result.success && result.data) {
         upsertSavedPolygon(result.data)
         renameSelection(id, result.data.name)
@@ -177,7 +167,7 @@ export const usePolygonCrud = () => {
         clearSelectionOf('polygon', [id])
       }
     },
-    [upsertSavedPolygon, removeSavedPolygon, clearSelectionOf, renameSelection],
+    [provider, upsertSavedPolygon, removeSavedPolygon, clearSelectionOf, renameSelection],
   )
 
   const applyUpdate = useCallback(
@@ -186,7 +176,7 @@ export const usePolygonCrud = () => {
       if (!current) return false
 
       setIsUpdating(true)
-      const result = await polygonProvider.update(id, {
+      const result = await provider.update(id, {
         ...changes,
         id,
         timestamp: current.timestamp,
@@ -210,7 +200,15 @@ export const usePolygonCrud = () => {
       notifySuccess(result.message || POLYGON_MESSAGES.UPDATED_FALLBACK)
       return true
     },
-    [setIsUpdating, reloadPolygon, notifyError, upsertSavedPolygon, renameSelection, notifySuccess],
+    [
+      provider,
+      setIsUpdating,
+      reloadPolygon,
+      notifyError,
+      upsertSavedPolygon,
+      renameSelection,
+      notifySuccess,
+    ],
   )
 
   const handleUpdate = useCallback(
@@ -240,7 +238,6 @@ export const usePolygonCrud = () => {
   )
 
   const handleDelete = useCallback(async () => {
-    // 1. Delete selected polygon (either unsaved draft or persisted in DB)
     if (selectedPolygon) {
       if (selectedPolygon.isDraft) {
         removeDraftPolygon(selectedPolygon.id)
@@ -250,11 +247,10 @@ export const usePolygonCrud = () => {
       }
 
       setIsDeleting(true)
-      const result = await polygonProvider.delete(selectedPolygon.id)
+      const result = await provider.delete(selectedPolygon.id)
       setIsDeleting(false)
 
       if (!result.success) {
-        // An item removed elsewhere is refreshed from the server
         if (result.statusCode === StatusCodes.NOT_FOUND) {
           await reloadPolygon(selectedPolygon.id)
         }
@@ -268,14 +264,12 @@ export const usePolygonCrud = () => {
       return
     }
 
-    // 2. Cancel active drawing if in progress with no polygon selected
     if (isDrawing) {
       cancelDrawing()
       notifyInfo(POLYGON_MESSAGES.DRAWING_CANCELLED)
       return
     }
 
-    // 3. Otherwise offer to delete all polygons (per spec: "Deletes a selected polygon or all polygons")
     const totalCount = (polygons?.length ?? 0) + draftPolygons.length
     if (totalCount === 0) {
       notifyInfo(POLYGON_MESSAGES.NO_POLYGONS_TO_DELETE)
@@ -283,6 +277,7 @@ export const usePolygonCrud = () => {
     }
     setDeleteAllDialogOpen(true)
   }, [
+    provider,
     selectedPolygon,
     removeDraftPolygon,
     clearSelection,
@@ -303,7 +298,7 @@ export const usePolygonCrud = () => {
     const savedCount = polygons?.length ?? 0
     if (savedCount > 0) {
       setIsDeleting(true)
-      const result = await polygonProvider.deleteAll()
+      const result = await provider.deleteAll()
       setIsDeleting(false)
 
       if (!result.success) {
@@ -323,6 +318,7 @@ export const usePolygonCrud = () => {
     setDeleteAllDialogOpen(false)
     notifyInfo(POLYGON_MESSAGES.DRAFT_REMOVED)
   }, [
+    provider,
     polygons,
     setIsDeleting,
     notifyError,

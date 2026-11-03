@@ -1,8 +1,6 @@
-// Core React ecosystem library imports
 import { useId } from 'react'
 import type { ReactNode } from 'react'
 
-// Material UI components and styling imports
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 import { Box, ButtonBase, Collapse, Paper, Stack, Typography } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material/styles'

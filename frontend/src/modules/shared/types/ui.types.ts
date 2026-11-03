@@ -1,4 +1,3 @@
-// Core React ecosystem library imports
 import type { ReactNode } from 'react'
 
 // Severity levels supported by the snackbar

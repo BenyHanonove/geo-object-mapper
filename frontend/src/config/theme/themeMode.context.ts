@@ -1,9 +1,6 @@
-// Core React ecosystem library imports
 import { createContext, useContext } from 'react'
 
-// Local type and interface definition imports
 import type { ThemeMode } from './tokens'
-
 
 // Shape of the theme mode context
 export interface IThemeModeContextValue {

@@ -1,10 +1,7 @@
-// Material UI components and styling imports
 import { Stack, Typography } from '@mui/material'
 
-// Shared application components and services imports
 import { formatCoordinate } from '@shared/utils/geo.utils'
 
-// Global Zustand stores and helpers imports
 import { useMapWorkspaceStore } from '@stores'
 
 // Bottom strip showing live cursor coordinates

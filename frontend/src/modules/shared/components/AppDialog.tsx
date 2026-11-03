@@ -1,7 +1,5 @@
-// Core React ecosystem library imports
 import type { ReactNode } from 'react'
 
-// Material UI components and styling imports
 import {
   Dialog,
   DialogActions,
@@ -10,7 +8,6 @@ import {
   DialogTitle,
 } from '@mui/material'
 
-// Local sibling module and definition imports
 import { AppButton } from './AppButton'
 
 // Props for the confirmation dialog wrapper

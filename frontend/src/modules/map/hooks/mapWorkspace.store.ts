@@ -1,7 +1,5 @@
-// Zustand state management library imports
 import { create } from 'zustand'
 
-// Local type and interface definition imports
 import type {
   IFlyToTarget,
   IMapSelection,

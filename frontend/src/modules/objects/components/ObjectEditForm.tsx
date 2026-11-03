@@ -1,17 +1,12 @@
-// Core React ecosystem library imports
 import { useState } from 'react'
 
-// Material UI components and styling imports
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import { MenuItem, Stack, TextField, Typography } from '@mui/material'
 
-// Object feature module implementation imports
 import { OBJECT_MESSAGES, OBJECT_SYMBOL_OPTIONS } from '@objects/constants/object.constants'
 
-// Shared application components and services imports
 import { AppButton } from '@shared/components'
 
-// Local type and interface definition imports
 import type {
   ICreateGeoObject,
   IGeoObject,

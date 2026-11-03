@@ -1,16 +1,11 @@
-// Zustand state management library imports
 import { create } from 'zustand'
 
-// Application theme design token imports
 import { POLYGON_SWATCH_TOKENS } from '@plugins'
 
-// Global Zustand stores and helpers imports
 import { createEntityStore, nextAvailableName, sortByLocale } from '@stores/utils/createEntityStore'
 
-// Shared application components and services imports
 import { isSameLatLon, verticesToClosedGeoJsonPolygon } from '@shared/utils/geo.utils'
 
-// Local type and interface definition imports
 import type { IEntityState } from '@stores/utils/createEntityStore'
 import type { IDraftPolygon, IPolygon } from '@polygons/types/IPolygon.types'
 import type { ILatLon } from '@shared/types/geojson.types'

@@ -1,22 +1,15 @@
-// Core React ecosystem library imports
 import { useEffect, useState } from 'react'
 
-// Leaflet mapping library and styles imports
 import { Polyline, useMap, useMapEvents } from 'react-leaflet'
 
-// Map feature module implementation imports
 import { START_VERTEX_SNAP_PX } from '@map/constants/map.constants'
 
-// Object feature module implementation imports
 import { useGeoObjectCrud } from '@objects/hooks/geoObject.crud'
 
-// Polygon feature module implementation imports
 import { usePolygonCrud } from '@polygons/hooks/polygon.crud'
 
-// Global Zustand stores and helpers imports
 import { useMapWorkspaceStore } from '@stores'
 
-// Local type and interface definition imports
 import type { IMapThemeTokens } from '@plugins'
 import type { ILatLon } from '@shared/types/geojson.types'
 

@@ -1,20 +1,14 @@
-// Core React ecosystem library imports
 import { useMemo } from 'react'
 
-// Material UI components and styling imports
 import { useTheme } from '@mui/material'
 
-// Leaflet mapping library and styles imports
 import type L from 'leaflet'
 import { Marker } from 'react-leaflet'
 
-// Map feature module implementation imports
 import { buildVertexDivIcon } from '@map/utils/leafletIcons.utils'
 
-// Shared application components and services imports
 import { geoJsonPolygonToVertices } from '@shared/utils/geo.utils'
 
-// Local type and interface definition imports
 import type { IPolygon } from '@polygons/types/IPolygon.types'
 import type { ILatLon } from '@shared/types/geojson.types'
 

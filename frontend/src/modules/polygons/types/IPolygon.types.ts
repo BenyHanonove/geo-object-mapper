@@ -1,4 +1,3 @@
-// Local type and interface definition imports
 import type { IGeoJsonPolygon } from '@shared/types/geojson.types'
 
 // Payload for creating a polygon

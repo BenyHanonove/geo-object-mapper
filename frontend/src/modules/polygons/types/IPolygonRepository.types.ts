@@ -1,4 +1,3 @@
-// Local type and interface definition imports
 import type { ICreatePolygon, IPolygon, IUpdatePolygon } from './IPolygon.types'
 import type { IApiResponse } from '@shared/types/api.types'
 

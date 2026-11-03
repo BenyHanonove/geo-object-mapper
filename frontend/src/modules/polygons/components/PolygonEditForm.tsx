@@ -1,20 +1,14 @@
-// Core React ecosystem library imports
 import { useState } from 'react'
 
-// Material UI components and styling imports
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import { Stack, TextField, Typography } from '@mui/material'
 
-// Polygon feature module implementation imports
 import { POLYGON_MESSAGES } from '@polygons/constants/polygon.constants'
 
-// Shared application components and services imports
 import { AppButton } from '@shared/components'
 
-// Local sibling module and definition imports
 import { PolygonColorSwatches } from './PolygonColorSwatches'
 
-// Local type and interface definition imports
 import type { ICreatePolygon, IPolygon } from '@polygons/types/IPolygon.types'
 
 // Props for the saved polygon form

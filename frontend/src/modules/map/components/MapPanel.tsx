@@ -1,12 +1,9 @@
-// Core React ecosystem library imports
 import { Fragment, useMemo } from 'react'
 
-// Material UI components and styling imports
 import MyLocationRoundedIcon from '@mui/icons-material/MyLocationRounded'
 import { Box, IconButton, Paper, Stack, Tooltip, Typography, useTheme } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
-// Leaflet mapping library and styles imports
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import {
@@ -19,7 +16,6 @@ import {
   Tooltip as LeafletTooltip,
 } from 'react-leaflet'
 
-// Map feature module implementation imports
 import {
   DEFAULT_MAP_TILE_SOURCE,
   MAP_MIN_ZOOM,
@@ -28,17 +24,13 @@ import {
 } from '@map/constants/map.constants'
 import { buildObjectDivIcon } from '@map/utils/leafletIcons.utils'
 
-// Object feature module implementation imports
 import { OBJECT_SYMBOL_LABEL_MAP } from '@objects/constants/object.constants'
 import { useGeoObjectCrud } from '@objects/hooks/geoObject.crud'
 
-// Typed application environment configuration imports
 import { env } from '@plugins'
 
-// Polygon feature module implementation imports
 import { usePolygonCrud } from '@polygons/hooks/polygon.crud'
 
-// Shared application components and services imports
 import { AppCard, StatusChip } from '@shared/components'
 import {
   formatCoordinate,
@@ -46,10 +38,8 @@ import {
   geoJsonPolygonToVertices,
 } from '@shared/utils/geo.utils'
 
-// Global Zustand stores and helpers imports
 import { useGeoObjectsStore, useMapWorkspaceStore, usePolygonsStore } from '@stores'
 
-// Local sibling module and definition imports
 import { MapCanvasController } from './MapCanvasController'
 import { MapCursorStrip } from './MapCursorStrip'
 import { PolygonVertexHandles } from './PolygonVertexHandles'

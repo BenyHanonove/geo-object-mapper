@@ -1,7 +1,5 @@
-// Material UI components and styling imports
 import { Alert, Snackbar } from '@mui/material'
 
-// Shared application components and services imports
 import { useSnackbarStore } from '@shared/hooks/snackbar.store'
 
 // Global snackbar bound to store state

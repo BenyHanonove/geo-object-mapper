@@ -1,4 +1,3 @@
-// Material UI components and styling imports
 import { CircularProgress, Stack, Typography } from '@mui/material'
 
 // Props for the fullscreen loading indicator

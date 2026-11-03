@@ -1,8 +1,6 @@
-// Shared application components and services imports
 import { BaseRepository } from '@shared/repository/BaseRepository'
 import { httpClient } from '@shared/repository/httpClient'
 
-// Local type and interface definition imports
 import type { ICreatePolygon, IPolygon, IUpdatePolygon } from '@polygons/types/IPolygon.types'
 import type { IPolygonRepository } from '@polygons/types/IPolygonRepository.types'
 import type { IApiEnvelope, IApiResponse } from '@shared/types/api.types'

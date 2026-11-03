@@ -22,13 +22,6 @@ obj/
 .DS_Store
 Thumbs.db
 
-# AI Tools, Skills & Internal Notes
-.agents/
-.claude/
-.gemini/
-*.summary.md
-*SUMMARY.md
-
 # Environment files (secrets)
 .env
 .env.*

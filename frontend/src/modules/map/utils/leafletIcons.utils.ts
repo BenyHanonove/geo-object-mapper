@@ -1,11 +1,8 @@
-// Leaflet mapping library and styles imports
 import L from 'leaflet'
 
-// Object feature module implementation imports
 import { ObjectSymbolType } from '@objects/types/IGeoObject.types'
 import { getSymbolInnerPathsSvg } from '@objects/utils/symbolSvg.utils'
 
-// Local type and interface definition imports
 import type { IMapThemeTokens } from '@plugins'
 
 // Options for building object map icons

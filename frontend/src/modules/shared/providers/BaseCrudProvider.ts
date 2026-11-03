@@ -1,14 +1,8 @@
-// HTTP client and status code imports
 import axios from 'axios'
 import { StatusCodes } from 'http-status-codes'
-
-// Shared application components and services imports
 import { MESSAGES } from '@shared/constants/messages'
-
-// Local type and interface definition imports
 import type { IApiProblem, IApiResponse, IProviderResult } from '@shared/types/api.types'
 
-// Repository contract required by crud providers
 export interface ICrudRepository<TEntity, TCreate, TUpdate> {
   list(ids?: string[]): Promise<IApiResponse<TEntity[]>>
   get(id: string): Promise<IApiResponse<TEntity>>
@@ -17,13 +11,20 @@ export interface ICrudRepository<TEntity, TCreate, TUpdate> {
   delete(id: string): Promise<IApiResponse<boolean>>
 }
 
-// Stateless provider wrapper: never re-throws, never logs, preserves HTTP statusCode
+export interface ICrudProvider<TEntity, TCreate, TUpdate> {
+  list(ids?: string[]): Promise<IProviderResult<TEntity[]>>
+  get(id: string): Promise<IProviderResult<TEntity>>
+  create(data: TCreate): Promise<IProviderResult<TEntity>>
+  update(id: string, data: TUpdate): Promise<IProviderResult<TEntity>>
+  delete(id: string): Promise<IProviderResult<boolean>>
+}
+
 export class BaseCrudProvider<
   TEntity,
   TCreate,
   TUpdate,
   TRepo extends ICrudRepository<TEntity, TCreate, TUpdate> = ICrudRepository<TEntity, TCreate, TUpdate>,
-> {
+> implements ICrudProvider<TEntity, TCreate, TUpdate> {
   protected readonly repository: TRepo
 
   public constructor(repository: TRepo) {

@@ -1,15 +1,11 @@
-// Material UI components and styling imports
 import { Box, Stack } from '@mui/material'
 
-// Map feature module implementation imports
 import { MapDataPanel } from '@map/components/MapDataPanel'
 import { MapPanel } from '@map/components/MapPanel'
 import { WorkspaceHeader } from '@map/components/WorkspaceHeader'
 
-// Object feature module implementation imports
 import { ObjectsPanel } from '@objects/components/ObjectsPanel'
 
-// Polygon feature module implementation imports
 import { PolygonPanel } from '@polygons/components/PolygonPanel'
 
 // Four panel map workspace page layout

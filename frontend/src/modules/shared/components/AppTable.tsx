@@ -1,7 +1,5 @@
-// Core React ecosystem library imports
 import type { ReactNode } from 'react'
 
-// Material UI components and styling imports
 import {
   Box,
   LinearProgress,
@@ -14,10 +12,8 @@ import {
 } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
-// Local sibling module and definition imports
 import { EmptyState } from './EmptyState'
 
-// Local type and interface definition imports
 import type { ITableHeader } from '@shared/types/ui.types'
 
 // Props for the generic data table

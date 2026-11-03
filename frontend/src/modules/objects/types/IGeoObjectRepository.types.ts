@@ -1,4 +1,3 @@
-// Local type and interface definition imports
 import type {
   ICreateGeoObject,
   IGeoObject,

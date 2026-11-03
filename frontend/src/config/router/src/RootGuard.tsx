@@ -1,21 +1,10 @@
-// Core React ecosystem library imports
 import { Suspense, useEffect, useState } from 'react'
 import { Outlet, useMatches } from 'react-router'
-
-// Typed application environment configuration imports
 import { env } from '@plugins'
-
-// Shared application components and services imports
 import { GlobalLoading } from '@shared/components'
 import { loadAppData } from '@shared/services/app-init.service'
-
-// Local sibling module and definition imports
-import { clearChunkReloadGuard } from './chunkReload.utils'
-
-// Local type and interface definition imports
 import type { IRouteHandle } from './router.type'
 
-// Create or update a document meta tag
 const upsertMetaTag = (name: string, content: string): void => {
   let element = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`)
   if (!element) {
@@ -26,17 +15,10 @@ const upsertMetaTag = (name: string, content: string): void => {
   element.setAttribute('content', content)
 }
 
-// Root route bootstrapping data and metadata
 export function RootGuard() {
   const matches = useMatches()
   const [bootstrapped, setBootstrapped] = useState(false)
 
-  // Reaching this guard means route chunks loaded
-  useEffect(() => {
-    clearChunkReloadGuard()
-  }, [])
-
-  // Sync document title and description from deepest route handle
   useEffect(() => {
     let resolvedTitle: string | undefined
     let resolvedDescription: string | undefined

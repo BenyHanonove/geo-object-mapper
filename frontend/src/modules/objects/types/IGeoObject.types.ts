@@ -1,4 +1,3 @@
-// Local type and interface definition imports
 import type { IGeoJsonPoint } from '@shared/types/geojson.types'
 
 // Supported map object symbol types

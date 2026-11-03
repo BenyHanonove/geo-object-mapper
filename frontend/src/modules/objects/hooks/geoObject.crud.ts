@@ -1,26 +1,15 @@
-// Core React ecosystem library imports
 import { useCallback, useState } from 'react'
-
-// HTTP client and status code imports
 import { StatusCodes } from 'http-status-codes'
-
-// Object feature module implementation imports
 import { OBJECT_MESSAGES, OBJECT_SYMBOL_LABEL_MAP } from '@objects/constants/object.constants'
 import { geoObjectProvider } from '@objects/providers/geoObject.provider'
-
-// Shared application components and services imports
 import { useSnackbar } from '@shared/hooks/snackbar.store'
 import { createGeoJsonPoint } from '@shared/utils/geo.utils'
-
-// Global Zustand stores and helpers imports
 import { useGeoObjectsStore, useMapWorkspaceStore, usePolygonsStore } from '@stores'
-
-// Local type and interface definition imports
 import type { ICreateGeoObject, ObjectSymbolType } from '@objects/types/IGeoObject.types'
+import type { IGeoObjectProvider } from '@objects/types/IGeoObjectProvider.types'
 import type { ILatLon } from '@shared/types/geojson.types'
 
-// Object placement, save, update and delete handlers
-export const useGeoObjectCrud = () => {
+export const useGeoObjectCrud = (provider: IGeoObjectProvider = geoObjectProvider) => {
   const [deleteAllDialogOpen, setDeleteAllDialogOpen] = useState(false)
   const { notifySuccess, notifyError, notifyInfo } = useSnackbar()
 
@@ -107,7 +96,7 @@ export const useGeoObjectCrud = () => {
     }))
 
     setIsSaving(true)
-    const result = await geoObjectProvider.save(payloads)
+    const result = await provider.save(payloads)
     setIsSaving(false)
 
     if (!result.success || !result.data) {
@@ -123,6 +112,7 @@ export const useGeoObjectCrud = () => {
     clearSelectionOf('object', savedTempIds)
     notifySuccess(result.message || OBJECT_MESSAGES.SAVED_FALLBACK)
   }, [
+    provider,
     notifyInfo,
     setIsSaving,
     notifyError,
@@ -135,7 +125,7 @@ export const useGeoObjectCrud = () => {
 
   const reloadObject = useCallback(
     async (id: string) => {
-      const result = await geoObjectProvider.get(id)
+      const result = await provider.get(id)
       if (result.success && result.data) {
         upsertSavedObject(result.data)
         renameSelection(id, result.data.name)
@@ -146,7 +136,7 @@ export const useGeoObjectCrud = () => {
         clearSelectionOf('object', [id])
       }
     },
-    [upsertSavedObject, removeSavedObject, clearSelectionOf, renameSelection],
+    [provider, upsertSavedObject, removeSavedObject, clearSelectionOf, renameSelection],
   )
 
   const applyUpdate = useCallback(
@@ -155,7 +145,7 @@ export const useGeoObjectCrud = () => {
       if (!current) return false
 
       setIsUpdating(true)
-      const result = await geoObjectProvider.update(id, {
+      const result = await provider.update(id, {
         ...changes,
         id,
         timestamp: current.timestamp,
@@ -179,7 +169,15 @@ export const useGeoObjectCrud = () => {
       notifySuccess(result.message || OBJECT_MESSAGES.UPDATED_FALLBACK)
       return true
     },
-    [setIsUpdating, reloadObject, notifyError, upsertSavedObject, renameSelection, notifySuccess],
+    [
+      provider,
+      setIsUpdating,
+      reloadObject,
+      notifyError,
+      upsertSavedObject,
+      renameSelection,
+      notifySuccess,
+    ],
   )
 
   const handleUpdate = useCallback(
@@ -212,11 +210,10 @@ export const useGeoObjectCrud = () => {
     }
 
     setIsDeleting(true)
-    const result = await geoObjectProvider.delete(selectedObject.id)
+    const result = await provider.delete(selectedObject.id)
     setIsDeleting(false)
 
     if (!result.success) {
-      // An item removed elsewhere is refreshed from the server
       if (result.statusCode === StatusCodes.NOT_FOUND) {
         await reloadObject(selectedObject.id)
       }
@@ -228,6 +225,7 @@ export const useGeoObjectCrud = () => {
     clearSelectionOf('object', [selectedObject.id])
     notifySuccess(result.message || OBJECT_MESSAGES.DELETED_FALLBACK)
   }, [
+    provider,
     selectedObject,
     notifyInfo,
     removeDraftObject,
@@ -245,7 +243,7 @@ export const useGeoObjectCrud = () => {
   const handleConfirmDeleteAll = useCallback(async () => {
     if ((objects?.length ?? 0) > 0) {
       setIsDeleting(true)
-      const result = await geoObjectProvider.deleteAll()
+      const result = await provider.deleteAll()
       setIsDeleting(false)
 
       if (!result.success) {
@@ -265,6 +263,7 @@ export const useGeoObjectCrud = () => {
     setDeleteAllDialogOpen(false)
     notifyInfo(OBJECT_MESSAGES.DRAFT_REMOVED)
   }, [
+    provider,
     objects,
     setIsDeleting,
     notifyError,

@@ -1,10 +1,7 @@
-// Core React ecosystem library imports
 import { useCallback } from 'react'
 
-// Zustand state management library imports
 import { create } from 'zustand'
 
-// Local type and interface definition imports
 import type { SnackbarSeverity } from '@shared/types/ui.types'
 
 // State and actions of the snackbar
