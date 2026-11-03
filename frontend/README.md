@@ -10,7 +10,7 @@ Every business domain lives under `src/modules/<domain>/` with the same one-way 
 
 ```text
 src/
-├── main.tsx                        Bootstrap and stale-chunk guard
+├── main.tsx                        Application bootstrap
 ├── App.tsx                         Theme, router and snackbar
 ├── config/
 │   ├── env/                        Sole reader of import.meta.env
@@ -18,9 +18,9 @@ src/
 │   ├── store/                      @stores barrel and createEntityStore factory
 │   └── router/                     Data router, RootGuard and RouteError
 └── modules/
-    ├── shared/                     BaseRepository, BaseCrudProvider, httpClient and shared UI
-    ├── polygons/                   Panel 2: drawing, store, repository and CRUD hook
-    ├── objects/                    Panel 3: symbols, store, repository and CRUD hook
+    ├── shared/                     ICrudRepository / BaseRepository, ICrudProvider / BaseCrudProvider, httpClient and shared UI
+    ├── polygons/                   Panel 2: drawing, store, IPolygonProvider, repository and CRUD hook
+    ├── objects/                    Panel 3: symbols, store, IGeoObjectProvider, repository and CRUD hook
     └── map/                        Panel 1 (map), Panel 4 (Map Data) and workspace layout
 ```
 

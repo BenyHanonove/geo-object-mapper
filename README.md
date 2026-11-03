@@ -50,7 +50,7 @@ Ports 5000 and 5173 must be free. Data stays in a Docker volume between runs, an
 
 ## API
 
-Successful responses use the envelope `{ "message": string, "data": ... }`. Errors use `ProblemDetails`.
+Successful JSON responses use the envelope `{ "message": string, "data": ... }`; `POST` single-item creates return `201 Created` with a `Location` header, and `DELETE` endpoints return `204 No Content`. Errors use `ProblemDetails` (`ValidationProblemDetails` for field validation).
 
 | Method | Route | Purpose |
 |---|---|---|
@@ -67,7 +67,7 @@ Successful responses use the envelope `{ "message": string, "data": ... }`. Erro
 - **Drafts stay in the client until Save.** Drawing and placing never call the server, so the table shows only what MongoDB holds and the map marks unsaved items.
 - **The server has the final say on geometry.** Validators check the ring structure, and the `2dsphere` index rejects shapes such as self-crossing polygons. That rejection is returned as a 400 with a clear message.
 - **Updates use optimistic concurrency.** A write only matches the stored timestamp, so two editors get a 409 instead of a silent overwrite.
-- **Layered backend.** Domain, Application, Infrastructure and Api keep Mongo out of the business rules, and validation and logging run in one MediatR pipeline. This is more structure than two entities strictly need, and I would use fewer layers for a service that will stay this small.
+- **Layered backend.** Domain, Application, Infrastructure and Api keep MongoDB out of the business rules, with explicit interfaces across repositories, DB context and CQRS handlers, while validation and logging run in one MediatR pipeline.
 
 ## Assumptions
 
@@ -95,8 +95,8 @@ Saved items can be renamed, polygons can be reshaped by dragging vertices, and o
 
 | Suite | Command | Covers |
 |---|---|---|
-| Frontend | `cd frontend && npm ci && npm test` | Geometry helpers, drawing flow, Map Data states |
-| Backend | `cd backend && dotnet test` | Geometry rules, validators, update conflicts |
+| Frontend | `cd frontend && npm ci && npm test` | Geometry helpers, drawing flow, Zustand stores, CRUD hooks & provider interfaces, Map Data states |
+| Backend | `cd backend && dotnet test` | Geometry rules, validators, CQRS handlers, optimistic concurrency, controllers, middleware & BSON serialization |
 
 The frontend also has `npm run lint` and `npm run type-check`. There are no automated tests against a real MongoDB yet. That flow was checked by hand in the browser.
 

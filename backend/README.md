@@ -6,16 +6,16 @@ ASP.NET Core 8 REST API that stores polygons and objects in MongoDB as GeoJSON.
 
 | Project | Responsibility |
 |---|---|
-| `GeoObjectMapper.Domain` | Entities, value objects, geometry rules and repository interfaces |
-| `GeoObjectMapper.Application` | Commands, queries, validators, DTOs and the `Result` type |
-| `GeoObjectMapper.Infrastructure` | MongoDB client, repositories, indexes and health check |
+| `GeoObjectMapper.Domain` | Entities, value objects, geometry rules and repository interfaces (`IPolygonRepository`, `IGeoObjectRepository`) |
+| `GeoObjectMapper.Application` | `ICommand`/`IQuery` contracts, handlers, validators, DTOs and the `Result` type |
+| `GeoObjectMapper.Infrastructure` | `IMongoDbContext`, MongoDB repositories, `2dsphere` index initializer and health check |
 | `GeoObjectMapper.Api` | Controllers, middleware, Swagger and startup |
 
 Domain depends on nothing. Application depends on Domain. Infrastructure implements the Domain interfaces, and Api wires everything together.
 
 ## Request flow
 
-A controller sends a command or query through MediatR. The pipeline logs the request and runs FluentValidation before the handler. Handlers return a `Result`, and `ApiControllerBase` turns failures into `ProblemDetails` responses. Unexpected exceptions are handled by `GlobalExceptionHandlerMiddleware`.
+A controller sends an `ICommand` or `IQuery` through MediatR. The pipeline logs the request and runs FluentValidation before the handler. Handlers return a `Result`, and `ApiControllerBase` turns failures into `ProblemDetails` (or `ValidationProblemDetails` with field-level errors on validation failure). Unexpected exceptions are handled by `GlobalExceptionHandlerMiddleware`.
 
 ## Configuration
 
